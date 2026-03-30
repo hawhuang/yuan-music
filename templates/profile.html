@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>编辑个人信息 - 缘音乐</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(180deg, #f3e5f5 0%, #fce4ec 40%, #e8eaf6 100%);
+            font-family: 'Noto Sans SC', sans-serif;
+            min-height: 100vh;
+            color: #5d4037;
+        }
+        .bubble {
+            position: fixed; border-radius: 50%; z-index: 0; pointer-events: none; opacity: 0.25;
+            animation: bubbleFloat ease-in-out infinite;
+        }
+        .bubble.b1 { width: 130px; height: 130px; background: #e1bee7; top: -30px; left: -30px; animation-duration: 8s; }
+        .bubble.b2 { width: 100px; height: 100px; background: #b3e5fc; bottom: 10%; right: -20px; animation-duration: 10s; animation-delay: 2s; }
+        @keyframes bubbleFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.03); }
+        }
+
+        /* 导航栏 */
+        .navbar-cute {
+            background: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(15px);
+            border-bottom: 2px solid #e1bee7;
+            box-shadow: 0 2px 12px rgba(186, 130, 200, 0.15);
+        }
+        .navbar-cute .navbar-brand {
+            color: #ab47bc !important;
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-size: 1.1rem;
+        }
+        .btn-nav {
+            border: 2px solid #ce93d8 !important;
+            color: #ab47bc !important;
+            border-radius: 20px !important;
+            font-size: 0.85rem;
+            padding: 4px 16px !important;
+            transition: all 0.3s;
+            font-weight: 500;
+            background: transparent;
+        }
+        .btn-nav:hover {
+            background: #f3e5f5 !important;
+            box-shadow: 0 2px 10px rgba(171, 71, 188, 0.2);
+            color: #7b1fa2 !important;
+        }
+
+        .container { position: relative; z-index: 1; }
+
+        /* 卡片 */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(225, 190, 231, 0.5);
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(186, 130, 200, 0.12);
+        }
+
+        /* 表单 */
+        .form-label {
+            font-weight: 600;
+            color: #7b1fa2;
+            font-size: 0.9rem;
+        }
+        .form-control {
+            background: #fff;
+            border: 2px solid #e1bee7;
+            border-radius: 14px;
+            color: #5d4037;
+            padding: 12px 16px;
+            transition: all 0.3s;
+        }
+        .form-control::placeholder { color: #ce93d8; }
+        .form-control:focus {
+            border-color: #f06292;
+            box-shadow: 0 0 0 3px rgba(240, 98, 146, 0.12);
+            color: #4a148c;
+        }
+        .form-control:disabled {
+            background: #fafafa;
+            color: #bdbdbd;
+            border-color: #e0e0e0;
+        }
+        .form-text {
+            color: #a1887f;
+            font-size: 0.8rem;
+        }
+        .form-check-input {
+            background-color: #fff;
+            border: 2px solid #e1bee7;
+        }
+        .form-check-input:checked {
+            background-color: #f06292;
+            border-color: #f06292;
+            box-shadow: 0 0 0 2px rgba(240, 98, 146, 0.2);
+        }
+        .form-check-label { color: #5d4037; font-weight: 500; }
+
+        /* 保存按钮 */
+        .btn-save {
+            background: linear-gradient(135deg, #f06292, #ab47bc);
+            border: none;
+            color: #fff;
+            border-radius: 25px;
+            padding: 12px 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(240, 98, 146, 0.3);
+        }
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(240, 98, 146, 0.4);
+            color: #fff;
+        }
+
+        /* flash 消息 */
+        .alert-cute {
+            background: #e8f5e9;
+            border: 2px solid #a5d6a7;
+            color: #2e7d32;
+            border-radius: 14px;
+        }
+        .alert-cute .btn-close { opacity: 0.5; }
+
+        /* 照片上传区域 */
+        .photo-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed #f8bbd0;
+        }
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .photo-slot {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px dashed #e1bee7;
+            background: rgba(243, 229, 245, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .photo-slot:hover {
+            border-color: #f06292;
+            background: rgba(252, 228, 236, 0.4);
+        }
+        .photo-slot.has-photo {
+            border: 2px solid #f8bbd0;
+            cursor: default;
+        }
+        .photo-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .photo-slot .add-icon {
+            color: #ce93d8;
+            font-size: 2rem;
+            text-align: center;
+        }
+        .photo-slot .add-icon small {
+            display: block;
+            font-size: 0.7rem;
+            margin-top: 4px;
+        }
+        .photo-slot .delete-btn {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ef5350;
+            border: none;
+            color: #fff;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 2;
+            box-shadow: 0 2px 6px rgba(239, 83, 80, 0.3);
+        }
+        .photo-slot:hover .delete-btn { opacity: 1; }
+        .photo-uploading {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ab47bc;
+            font-size: 0.85rem;
+            border-radius: 14px;
+        }
+        .photo-uploading .spinner {
+            width: 20px; height: 20px;
+            border: 2px solid #e1bee7;
+            border-top-color: #ab47bc;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 6px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* 浮动爱心 */
+        .heart {
+            position: fixed; z-index: 0; pointer-events: none;
+            opacity: 0;
+            animation: heartFloat linear infinite;
+        }
+        @keyframes heartFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bubble b1"></div>
+    <div class="bubble b2"></div>
+
+    <nav class="navbar navbar-cute sticky-top">
+        <div class="container-fluid">
+            <span class="navbar-brand">✏️ 编辑个人信息</span>
+            <a href="/square" class="btn btn-nav">🌸 返回广场</a>
+        </div>
+    </nav>
+
+    <div class="container mt-3 mb-4">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for msg in messages %}
+        <div class="alert alert-cute alert-dismissible fade show" role="alert">
+            {{ msg }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="card profile-card">
+            <div class="card-body p-4">
+                <form method="post" action="/profile">
+                    <div class="mb-3">
+                        <label class="form-label">📱 手机号</label>
+                        <input type="text" class="form-control" value="{{ me.phone }}" disabled>
+                        <div class="form-text">手机号不可修改</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nickname" class="form-label">✨ 昵称</label>
+                        <input type="text" class="form-control" id="nickname" name="nickname" 
+                               value="{{ me.nickname or '' }}" placeholder="请输入昵称" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">🌈 性别</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="gender_m" value="男"
+                                       {{ 'checked' if me.gender == '男' }}>
+                                <label class="form-check-label" for="gender_m">👦 男</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="gender_f" value="女"
+                                       {{ 'checked' if me.gender == '女' }}>
+                                <label class="form-check-label" for="gender_f">👧 女</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="age" class="form-label">🎂 年龄</label>
+                        <input type="number" class="form-control" id="age" name="age" 
+                               value="{{ me.age or '' }}" placeholder="请输入年龄" min="1" max="120">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="hometown" class="form-label">🏠 家乡</label>
+                        <input type="text" class="form-control" id="hometown" name="hometown" 
+                               value="{{ me.hometown or '' }}" placeholder="请输入家乡">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="hobbies" class="form-label">🎯 兴趣爱好</label>
+                        <input type="text" class="form-control" id="hobbies" name="hobbies" 
+                               value="{{ me.hobbies or '' }}" placeholder="多个爱好用逗号分隔，如：音乐,旅游,跑步">
+                        <div class="form-text">多个爱好请用英文逗号分隔</div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-save">💾 保存修改</button>
+                    </div>
+                </form>
+
+                <!-- 照片上传区域（独立于表单） -->
+                <div class="photo-section">
+                    <label class="form-label">📷 我的照片（最多3张）</label>
+                    <div class="photo-grid" id="photoGrid">
+                        {% for photo in me.photos %}
+                        <div class="photo-slot has-photo" data-photo-id="{{ photo.id }}">
+<img src="/photo/{{ photo.id }}" alt="照片">
+                            <button class="delete-btn" onclick="deletePhoto({{ photo.id }}, this)" title="删除">✕</button>
+                        </div>
+                        {% endfor %}
+                        {% for i in range(3 - me.photos|length) %}
+                        <div class="photo-slot empty-slot" onclick="triggerUpload(this)">
+                            <div class="add-icon">+<small>上传照片</small></div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-text mt-2">支持 jpg/png/gif/webp 格式，单张不超过 5MB</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 隐藏的文件输入
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/jpeg,image/png,image/gif,image/webp';
+        fileInput.style.display = 'none';
+        document.body.appendChild(fileInput);
+
+        let currentSlot = null;
+
+        function triggerUpload(slot) {
+            currentSlot = slot;
+            fileInput.click();
+        }
+
+        fileInput.addEventListener('change', function() {
+            if (!this.files[0] || !currentSlot) return;
+            const file = this.files[0];
+            if (file.size > 5 * 1024 * 1024) {
+                alert('照片大小不能超过 5MB');
+                this.value = '';
+                return;
+            }
+
+            currentSlot.innerHTML = '<div class="photo-uploading"><div class="spinner"></div>上传中...</div>';
+
+            const formData = new FormData();
+            formData.append('photo', file);
+
+            fetch('/upload_photo', { method: 'POST', body: formData })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        currentSlot.className = 'photo-slot has-photo';
+                        currentSlot.setAttribute('data-photo-id', data.photo_id);
+                        currentSlot.onclick = null;
+                        currentSlot.innerHTML = `
+                            <img src="${data.url}" alt="照片">
+                            <button class="delete-btn" onclick="deletePhoto(${data.photo_id}, this)" title="删除">✕</button>
+                        `;
+                    } else {
+                        alert(data.error || '上传失败');
+                        currentSlot.innerHTML = '<div class="add-icon">+<small>上传照片</small></div>';
+                    }
+                })
+                .catch(() => {
+                    alert('上传失败，请重试');
+                    currentSlot.innerHTML = '<div class="add-icon">+<small>上传照片</small></div>';
+                });
+            this.value = '';
+        });
+
+        function deletePhoto(photoId, btn) {
+            if (!confirm('确定删除这张照片吗？')) return;
+            fetch(`/delete_photo/${photoId}`, { method: 'POST' })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        const slot = btn.closest('.photo-slot');
+                        slot.className = 'photo-slot empty-slot';
+                        slot.removeAttribute('data-photo-id');
+                        slot.onclick = function() { triggerUpload(this); };
+                        slot.innerHTML = '<div class="add-icon">+<small>上传照片</small></div>';
+                    } else {
+                        alert(data.error || '删除失败');
+                    }
+                })
+                .catch(() => alert('删除失败，请重试'));
+        }
+
+        const hearts = ['🌸', '✨', '💜', '🎵', '🌷', '🦋'];
+        for (let i = 0; i < 8; i++) {
+            const h = document.createElement('div');
+            h.className = 'heart';
+            h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.fontSize = (Math.random() * 0.6 + 0.8) + 'rem';
+            h.style.animationDuration = (Math.random() * 12 + 12) + 's';
+            h.style.animationDelay = (Math.random() * 15) + 's';
+            document.body.appendChild(h);
+        }
+    </script>
+</body>
+</html>
