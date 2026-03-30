@@ -17,16 +17,16 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# ==================== 全局样式（可爱轻松风格） ====================
+# ==================== 全局样式（AI 科技风格） ====================
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Orbitron:wght@400;700;900&display=swap');
 
-    /* 全局背景 - 动态渐变 */
+    /* 全局背景 - 深色科技渐变 */
     .stApp {
-        background: linear-gradient(135deg, #fff0f5 0%, #fce4ec 20%, #f3e5f5 40%, #e8eaf6 60%, #e1f5fe 80%, #e0f7fa 100%);
+        background: linear-gradient(135deg, #0a0e27 0%, #0d1137 25%, #141852 50%, #0d1137 75%, #0a0e27 100%);
         background-size: 400% 400%;
-        animation: gradientShift 15s ease infinite;
+        animation: gradientShift 20s ease infinite;
     }
     @keyframes gradientShift {
         0% { background-position: 0% 50%; }
@@ -34,107 +34,161 @@ st.markdown("""
         100% { background-position: 0% 50%; }
     }
 
+    /* 网格背景装饰 */
+    .stApp::before {
+        content: '';
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-image:
+            linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+        z-index: 0;
+    }
+
     /* 隐藏默认菜单和页脚 */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
 
-    /* 标题样式 */
+    /* 标题样式 - 霓虹发光 */
     h1 {
-        color: #e91e63 !important;
+        background: linear-gradient(135deg, #00f5ff, #7c4dff, #ff4081) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
         font-weight: 700 !important;
         text-align: center;
-        text-shadow: 0 2px 10px rgba(233, 30, 99, 0.15);
+        filter: drop-shadow(0 0 20px rgba(0, 245, 255, 0.3));
     }
     h2, h3 {
-        color: #ab47bc !important;
+        color: #00e5ff !important;
         font-weight: 600 !important;
+        text-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
     }
 
-    /* 按钮美化 - 更小巧精致 */
+    /* 全局文字颜色 */
+    .stApp, .stApp p, .stApp span, .stApp label, .stApp div {
+        color: #c8d6e5;
+    }
+    .stApp .stMarkdown p {
+        color: #c8d6e5;
+    }
+
+    /* 按钮美化 - 科技霓虹 */
     .stButton > button {
-        background: linear-gradient(135deg, #f48fb1, #ce93d8) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 20px !important;
+        background: linear-gradient(135deg, #0d47a1, #1565c0, #00bcd4) !important;
+        color: #e0f7fa !important;
+        border: 1px solid rgba(0, 229, 255, 0.3) !important;
+        border-radius: 12px !important;
         font-weight: 600 !important;
         font-size: 0.85rem !important;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
         padding: 6px 18px !important;
         transition: all 0.3s ease !important;
-        box-shadow: 0 2px 8px rgba(244, 143, 177, 0.3) !important;
+        box-shadow: 0 0 15px rgba(0, 188, 212, 0.2), inset 0 0 15px rgba(0, 188, 212, 0.05) !important;
         min-height: 38px !important;
         height: 38px !important;
         line-height: 1.2 !important;
         white-space: nowrap !important;
+        text-transform: uppercase;
     }
     .stButton > button:hover {
         transform: translateY(-2px) !important;
-        box-shadow: 0 4px 15px rgba(240, 98, 146, 0.4) !important;
-        background: linear-gradient(135deg, #f06292, #ab47bc) !important;
+        box-shadow: 0 0 25px rgba(0, 229, 255, 0.4), 0 0 50px rgba(0, 188, 212, 0.15) !important;
+        background: linear-gradient(135deg, #1565c0, #00bcd4, #00e5ff) !important;
+        border-color: rgba(0, 229, 255, 0.6) !important;
     }
     .stButton > button:active {
         transform: translateY(0px) !important;
     }
 
-    /* 输入框美化 */
+    /* 输入框美化 - 科技风 */
     .stTextInput > div > div > input {
-        border: 2px solid #f8bbd0 !important;
-        border-radius: 16px !important;
+        border: 1.5px solid rgba(0, 229, 255, 0.25) !important;
+        border-radius: 12px !important;
         padding: 10px 16px !important;
-        background: rgba(255,255,255,0.8) !important;
+        background: rgba(10, 14, 39, 0.8) !important;
+        color: #e0f7fa !important;
         transition: all 0.3s !important;
     }
     .stTextInput > div > div > input:focus {
-        border-color: #f06292 !important;
-        box-shadow: 0 0 0 3px rgba(240, 98, 146, 0.12) !important;
-        background: white !important;
+        border-color: #00e5ff !important;
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.15), 0 0 30px rgba(0, 229, 255, 0.05) !important;
+        background: rgba(13, 17, 55, 0.95) !important;
+    }
+    .stTextInput > div > div > input::placeholder {
+        color: rgba(200, 214, 229, 0.4) !important;
     }
     .stSelectbox > div > div {
-        border: 2px solid #f8bbd0 !important;
-        border-radius: 16px !important;
+        border: 1.5px solid rgba(0, 229, 255, 0.25) !important;
+        border-radius: 12px !important;
+        background: rgba(10, 14, 39, 0.8) !important;
     }
     .stNumberInput > div > div > input {
-        border: 2px solid #f8bbd0 !important;
-        border-radius: 16px !important;
+        border: 1.5px solid rgba(0, 229, 255, 0.25) !important;
+        border-radius: 12px !important;
+        background: rgba(10, 14, 39, 0.8) !important;
+        color: #e0f7fa !important;
     }
 
     /* 副标题 */
     .subtitle {
-        color: #ce93d8;
+        color: #00e5ff;
         font-size: 0.85rem;
-        letter-spacing: 4px;
+        letter-spacing: 6px;
         font-weight: 400;
         text-align: center;
         margin-top: -8px;
+        font-family: 'Orbitron', sans-serif;
+        text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
     }
 
-    /* 欢迎横幅 */
+    /* 欢迎横幅 - 科技毛玻璃 */
     .welcome-banner {
-        background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(252,228,236,0.7));
+        background: linear-gradient(135deg, rgba(13, 17, 55, 0.85), rgba(20, 24, 82, 0.7));
         backdrop-filter: blur(20px);
-        border-radius: 20px;
-        border: 1.5px solid rgba(248, 187, 208, 0.3);
+        border-radius: 16px;
+        border: 1px solid rgba(0, 229, 255, 0.15);
         padding: 20px 28px;
         margin-bottom: 20px;
-        box-shadow: 0 4px 20px rgba(233, 150, 180, 0.1);
+        box-shadow: 0 0 30px rgba(0, 229, 255, 0.05), inset 0 0 30px rgba(0, 229, 255, 0.02);
         display: flex;
         align-items: center;
         justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+    }
+    .welcome-banner::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 200%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.05), transparent);
+        animation: scanLine 4s linear infinite;
+    }
+    @keyframes scanLine {
+        0% { left: -100%; }
+        100% { left: 100%; }
     }
     .welcome-text {
-        color: #5d4037;
+        color: #c8d6e5;
         font-size: 1rem;
+        z-index: 1;
     }
     .welcome-text strong {
-        color: #e91e63;
+        color: #00e5ff;
         font-size: 1.15rem;
+        text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
     }
     .welcome-emoji {
         font-size: 2rem;
+        z-index: 1;
+        filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.5));
     }
 
-    /* 统计信息 */
+    /* 统计信息 - 科技面板 */
     .stat-row {
         display: flex;
         gap: 12px;
@@ -142,103 +196,116 @@ st.markdown("""
     }
     .stat-item {
         flex: 1;
-        background: rgba(255,255,255,0.75);
+        background: rgba(13, 17, 55, 0.7);
         backdrop-filter: blur(10px);
-        border-radius: 16px;
-        border: 1.5px solid rgba(248, 187, 208, 0.25);
+        border-radius: 14px;
+        border: 1px solid rgba(0, 229, 255, 0.12);
         padding: 14px 16px;
         text-align: center;
-        box-shadow: 0 2px 10px rgba(233, 150, 180, 0.08);
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.04);
+        position: relative;
+        overflow: hidden;
+    }
+    .stat-item::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #00e5ff, transparent);
+        opacity: 0.5;
     }
     .stat-num {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #e91e63;
+        color: #00e5ff;
         display: block;
+        text-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+        font-family: 'Orbitron', sans-serif;
     }
     .stat-label {
         font-size: 0.75rem;
-        color: #a1887f;
+        color: rgba(200, 214, 229, 0.6);
         margin-top: 2px;
+        letter-spacing: 1px;
     }
 
     /* 空状态 */
     .empty-state {
         text-align: center;
         padding: 60px 20px;
-        color: #bcaaa4;
+        color: rgba(200, 214, 229, 0.5);
     }
     .empty-state .empty-icon {
         font-size: 4rem;
         margin-bottom: 16px;
         display: block;
+        filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.3));
     }
     .empty-state .empty-title {
         font-size: 1.1rem;
-        color: #8d6e63;
+        color: #00e5ff;
         font-weight: 500;
         margin-bottom: 8px;
     }
     .empty-state .empty-desc {
         font-size: 0.85rem;
-        color: #bcaaa4;
+        color: rgba(200, 214, 229, 0.4);
     }
 
-    /* 分隔线 */
+    /* 分隔线 - 科技线条 */
     hr {
         border: none;
-        border-top: 1.5px dashed rgba(248, 187, 208, 0.5);
+        border-top: 1px solid rgba(0, 229, 255, 0.12);
         margin: 16px 0;
+        box-shadow: 0 0 8px rgba(0, 229, 255, 0.05);
     }
 
-    /* 浮动装饰 */
-    .deco-float {
-        position: fixed;
-        pointer-events: none;
-        z-index: 0;
-        opacity: 0.15;
-        font-size: 1.5rem;
-        animation: floatUp 8s ease-in-out infinite;
-    }
-    @keyframes floatUp {
-        0%, 100% { transform: translateY(0) rotate(0deg); }
-        50% { transform: translateY(-20px) rotate(10deg); }
+    /* 脉冲动画 */
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.6; }
     }
 
-    /* 登录页装饰 */
+    /* 数据流动画 */
+    @keyframes dataFlow {
+        0% { transform: translateY(0) scale(1); opacity: 0.6; }
+        50% { transform: translateY(-15px) scale(1.1); opacity: 1; }
+        100% { transform: translateY(0) scale(1); opacity: 0.6; }
+    }
+
+    /* 登录页装饰 - AI 风格 */
     .login-deco {
         text-align: center;
         font-size: 3.5rem;
         margin-bottom: 8px;
-        animation: bounce 2s ease-in-out infinite;
-    }
-    @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
+        animation: dataFlow 3s ease-in-out infinite;
+        filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.5));
     }
     .login-subtitle-box {
-        background: linear-gradient(135deg, rgba(252,228,236,0.6), rgba(243,229,245,0.6));
+        background: linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(124, 77, 255, 0.08));
+        border: 1px solid rgba(0, 229, 255, 0.15);
         border-radius: 30px;
         padding: 6px 24px;
         display: inline-block;
         margin: 4px auto 20px;
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.05);
     }
 
     /* 页面标题区域 */
     .page-header {
-        background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(252,228,236,0.5));
+        background: rgba(13, 17, 55, 0.8);
         backdrop-filter: blur(15px);
-        border-radius: 20px;
-        border: 1.5px solid rgba(248, 187, 208, 0.25);
+        border-radius: 16px;
+        border: 1px solid rgba(0, 229, 255, 0.12);
         padding: 16px 24px;
         margin-bottom: 16px;
-        box-shadow: 0 2px 15px rgba(233, 150, 180, 0.08);
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.05);
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
     .page-header-title {
-        color: #ab47bc;
+        color: #00e5ff;
         font-size: 1.3rem;
         font-weight: 700;
         margin: 0;
@@ -246,47 +313,81 @@ st.markdown("""
 
     /* Expander 美化 */
     .streamlit-expanderHeader {
-        background: rgba(255,255,255,0.6) !important;
-        border-radius: 14px !important;
-        border: 1.5px solid rgba(248, 187, 208, 0.3) !important;
+        background: rgba(13, 17, 55, 0.6) !important;
+        border-radius: 12px !important;
+        border: 1px solid rgba(0, 229, 255, 0.12) !important;
+        color: #c8d6e5 !important;
     }
 
     /* 表单美化 */
     [data-testid="stForm"] {
-        background: rgba(255,255,255,0.7);
+        background: rgba(13, 17, 55, 0.6);
         backdrop-filter: blur(10px);
-        border-radius: 20px;
-        border: 1.5px solid rgba(248, 187, 208, 0.25);
+        border-radius: 16px;
+        border: 1px solid rgba(0, 229, 255, 0.12);
         padding: 24px;
-        box-shadow: 0 2px 15px rgba(233, 150, 180, 0.08);
+        box-shadow: 0 0 25px rgba(0, 229, 255, 0.04);
     }
 
-    /* 侧边栏美化 */
+    /* 侧边栏美化 - 深色科技 */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #fff0f5, #fce4ec, #f3e5f5) !important;
+        background: linear-gradient(180deg, #080b20, #0d1137, #141852) !important;
+        border-right: 1px solid rgba(0, 229, 255, 0.1) !important;
     }
     [data-testid="stSidebar"] .stButton > button {
-        background: rgba(255,255,255,0.7) !important;
-        color: #ab47bc !important;
-        border: 1.5px solid rgba(248, 187, 208, 0.4) !important;
+        background: rgba(0, 229, 255, 0.06) !important;
+        color: #00e5ff !important;
+        border: 1px solid rgba(0, 229, 255, 0.2) !important;
         box-shadow: none !important;
     }
     [data-testid="stSidebar"] .stButton > button:hover {
-        background: rgba(255,255,255,0.95) !important;
-        border-color: #f48fb1 !important;
-        box-shadow: 0 2px 10px rgba(244, 143, 177, 0.2) !important;
+        background: rgba(0, 229, 255, 0.12) !important;
+        border-color: rgba(0, 229, 255, 0.4) !important;
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.1) !important;
+    }
+    [data-testid="stSidebar"] h3, [data-testid="stSidebar"] h5 {
+        color: #00e5ff !important;
+    }
+    [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] div {
+        color: #c8d6e5 !important;
     }
 
     /* 文件上传器美化 */
     [data-testid="stFileUploader"] {
-        border: 2px dashed #f8bbd0 !important;
-        border-radius: 16px !important;
+        border: 1.5px dashed rgba(0, 229, 255, 0.25) !important;
+        border-radius: 12px !important;
         padding: 8px !important;
+        background: rgba(10, 14, 39, 0.5) !important;
     }
 
     /* 成功/警告/错误消息美化 */
     .stAlert {
-        border-radius: 14px !important;
+        border-radius: 12px !important;
+        background: rgba(13, 17, 55, 0.8) !important;
+        border: 1px solid rgba(0, 229, 255, 0.15) !important;
+    }
+
+    /* Radio 按钮颜色 */
+    .stRadio > div {
+        color: #c8d6e5 !important;
+    }
+
+    /* DataFrame / 表格样式 */
+    .stDataFrame {
+        border: 1px solid rgba(0, 229, 255, 0.12) !important;
+        border-radius: 12px !important;
+    }
+
+    /* 下载按钮 */
+    .stDownloadButton > button {
+        background: linear-gradient(135deg, #1a237e, #283593) !important;
+        color: #00e5ff !important;
+        border: 1px solid rgba(0, 229, 255, 0.2) !important;
+    }
+
+    /* Caption 文字 */
+    .stCaption, small {
+        color: rgba(200, 214, 229, 0.5) !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -538,29 +639,38 @@ CARD_CSS = """
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: transparent; }
     .cute-card {
-        background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(252,228,236,0.3));
+        background: linear-gradient(135deg, rgba(13, 17, 55, 0.9), rgba(20, 24, 82, 0.7));
         backdrop-filter: blur(15px);
-        border-radius: 20px;
-        border: 1.5px solid rgba(248, 187, 208, 0.3);
+        border-radius: 16px;
+        border: 1px solid rgba(0, 229, 255, 0.12);
         padding: 20px 22px;
         margin: 0;
-        box-shadow: 0 3px 15px rgba(233, 150, 180, 0.12);
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.05), inset 0 0 20px rgba(0, 229, 255, 0.02);
         transition: all 0.3s ease;
         font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        color: #5d4037;
+        color: #c8d6e5;
         font-size: 14px;
         line-height: 1.5;
+        position: relative;
+        overflow: hidden;
+    }
+    .cute-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.3), transparent);
     }
     .cute-card:hover {
-        border-color: #f8bbd0;
-        box-shadow: 0 6px 25px rgba(233, 150, 180, 0.2);
+        border-color: rgba(0, 229, 255, 0.3);
+        box-shadow: 0 0 30px rgba(0, 229, 255, 0.1), inset 0 0 30px rgba(0, 229, 255, 0.03);
         transform: translateY(-2px);
     }
     .user-avatar {
         width: 48px;
         height: 48px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #f8bbd0, #ce93d8);
+        background: linear-gradient(135deg, #0d47a1, #00bcd4);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -568,7 +678,8 @@ CARD_CSS = """
         color: white;
         margin-right: 14px;
         flex-shrink: 0;
-        box-shadow: 0 2px 8px rgba(244, 143, 177, 0.3);
+        box-shadow: 0 0 15px rgba(0, 188, 212, 0.3);
+        border: 1px solid rgba(0, 229, 255, 0.2);
     }
     .user-info-row {
         display: flex;
@@ -578,49 +689,54 @@ CARD_CSS = """
     .user-name {
         font-weight: 700;
         font-size: 1.05rem;
-        color: #5d4037;
+        color: #e0f7fa;
+        text-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
     }
     .user-meta {
-        color: #a1887f;
+        color: rgba(200, 214, 229, 0.6);
         font-size: 0.82rem;
         margin-top: 2px;
     }
     .hobby-tag {
         display: inline-block;
-        background: linear-gradient(135deg, #fce4ec, #f3e5f5);
-        border: 1px solid rgba(248, 187, 208, 0.6);
-        color: #ad1457;
+        background: rgba(0, 229, 255, 0.06);
+        border: 1px solid rgba(0, 229, 255, 0.2);
+        color: #00e5ff;
         padding: 3px 12px;
         border-radius: 20px;
         font-size: 0.78rem;
         margin: 2px 4px 2px 0;
         font-weight: 500;
+        text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
     }
     .match-high {
         display: inline-block;
-        background: linear-gradient(135deg, #fce4ec, #f8bbd0);
-        border: 2px solid #f06292;
-        color: #c2185b;
+        background: rgba(0, 229, 255, 0.1);
+        border: 1.5px solid #00e5ff;
+        color: #00e5ff;
         padding: 4px 14px;
         border-radius: 20px;
         font-size: 0.82rem;
         font-weight: bold;
+        box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
+        text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
     }
     .match-medium {
         display: inline-block;
-        background: linear-gradient(135deg, #f3e5f5, #e1bee7);
-        border: 2px solid #ce93d8;
-        color: #7b1fa2;
+        background: rgba(124, 77, 255, 0.1);
+        border: 1.5px solid #7c4dff;
+        color: #b388ff;
         padding: 4px 14px;
         border-radius: 20px;
         font-size: 0.82rem;
         font-weight: bold;
+        box-shadow: 0 0 12px rgba(124, 77, 255, 0.15);
     }
     .match-low {
         display: inline-block;
-        background: #f5f5f5;
-        border: 2px solid #e0e0e0;
-        color: #9e9e9e;
+        background: rgba(200, 214, 229, 0.05);
+        border: 1.5px solid rgba(200, 214, 229, 0.2);
+        color: rgba(200, 214, 229, 0.5);
         padding: 4px 14px;
         border-radius: 20px;
         font-size: 0.82rem;
@@ -629,11 +745,11 @@ CARD_CSS = """
     .photo-thumb {
         width: 72px;
         height: 72px;
-        border-radius: 12px;
+        border-radius: 10px;
         object-fit: cover;
-        border: 2px solid rgba(248, 187, 208, 0.5);
+        border: 1.5px solid rgba(0, 229, 255, 0.2);
         margin-right: 6px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        box-shadow: 0 0 12px rgba(0, 229, 255, 0.08);
     }
     .photos-row {
         margin: 10px 0 6px 0;
@@ -642,15 +758,15 @@ CARD_CSS = """
         gap: 6px;
     }
     .admin-photo-card {
-        background: linear-gradient(135deg, rgba(255,255,255,0.88), rgba(243,229,245,0.3));
+        background: linear-gradient(135deg, rgba(13, 17, 55, 0.85), rgba(20, 24, 82, 0.6));
         backdrop-filter: blur(10px);
-        border: 1.5px solid rgba(248, 187, 208, 0.3);
-        border-radius: 16px;
+        border: 1px solid rgba(0, 229, 255, 0.12);
+        border-radius: 14px;
         padding: 14px 18px;
         margin: 0;
-        box-shadow: 0 2px 10px rgba(233, 150, 180, 0.08);
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.04);
         font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        color: #5d4037;
+        color: #c8d6e5;
         font-size: 14px;
         display: flex;
         align-items: center;
@@ -658,13 +774,14 @@ CARD_CSS = """
     }
     .photo-count-tag {
         display: inline-block;
-        background: linear-gradient(135deg, #fce4ec, #f3e5f5);
-        border: 1px solid #f8bbd0;
-        color: #e91e63;
+        background: rgba(0, 229, 255, 0.08);
+        border: 1px solid rgba(0, 229, 255, 0.25);
+        color: #00e5ff;
         padding: 2px 10px;
         border-radius: 12px;
         font-size: 0.72rem;
         font-weight: 600;
+        text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
     }
 </style>
 """
@@ -729,7 +846,7 @@ def page_login():
                 <span class="subtitle" style="margin:0;">♪ YUAN MUSIC ♪</span>
             </div>
         </div>
-        <p style="color:#a1887f; font-size:0.9rem; margin-top:4px;">用音乐连接有缘人 💕</p>
+        <p style="color:rgba(200,214,229,0.6); font-size:0.9rem; margin-top:4px;">AI 驱动 · 用音乐连接有缘人 🤖💕</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -760,8 +877,8 @@ def page_login():
                 st.warning("请输入手机号")
 
         st.markdown("""
-        <div style="text-align:center; margin-top:30px; color:#bcaaa4; font-size:0.78rem;">
-            🌸 遇见美好，从这里开始 🌸
+        <div style="text-align:center; margin-top:30px; color:rgba(200,214,229,0.4); font-size:0.78rem; letter-spacing:2px;">
+            ⚡ AI 智能匹配 · 遇见美好，从这里开始 ⚡
         </div>
         """, unsafe_allow_html=True)
 
@@ -778,7 +895,7 @@ def page_square():
     else:
         col1, col2, col3, col4 = st.columns([4, 1.2, 1.2, 1])
     with col1:
-        st.markdown("### 🌸 缘音乐广场")
+    st.markdown("### ⚡ 缘音乐广场")
     with col2:
         if st.button("✏️ 资料", key="nav_edit"):
             navigate('profile')
@@ -806,10 +923,10 @@ def page_square():
     st.markdown(f"""
     <div class="welcome-banner">
         <div class="welcome-text">
-            你好呀，<strong>{nickname}</strong> ✨<br>
-            <span style="font-size:0.82rem; color:#a1887f;">今天也要遇见美好的人哦~</span>
+            你好，<strong>{nickname}</strong> ⚡<br>
+            <span style="font-size:0.82rem; color:rgba(200,214,229,0.5);">AI 正在为你寻找最佳匹配...</span>
         </div>
-        <div class="welcome-emoji">🎶</div>
+        <div class="welcome-emoji">🤖</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -819,15 +936,15 @@ def page_square():
     <div class="stat-row">
         <div class="stat-item">
             <span class="stat-num">{len(all_users)}</span>
-            <span class="stat-label">总用户数</span>
+            <span class="stat-label">USERS</span>
         </div>
         <div class="stat-item">
             <span class="stat-num">{others_count}</span>
-            <span class="stat-label">可匹配</span>
+            <span class="stat-label">MATCHES</span>
         </div>
         <div class="stat-item">
-            <span class="stat-num">💕</span>
-            <span class="stat-label">等你发现</span>
+            <span class="stat-num">⚡</span>
+            <span class="stat-label">AI READY</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -884,9 +1001,9 @@ def page_ai_match():
     st.markdown(f"""
     <div class="welcome-banner">
         <div class="welcome-text">
-            根据兴趣爱好和年龄为 <strong>{me.get('nickname', '')}</strong> 匹配最佳对象 ✨
+            AI 正在分析兴趣与年龄数据，为 <strong>{me.get('nickname', '')}</strong> 计算最佳匹配 ⚡
         </div>
-        <div class="welcome-emoji">💘</div>
+        <div class="welcome-emoji">🧠</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -951,9 +1068,9 @@ def _render_user_cards(users):
     if not users:
         st.markdown("""
         <div class="empty-state">
-            <span class="empty-icon">🌸</span>
-            <div class="empty-title">暂时没有找到匹配的用户哦~</div>
-            <div class="empty-desc">新的缘分正在路上，请耐心等待 💕</div>
+            <span class="empty-icon">🔍</span>
+            <div class="empty-title">AI 暂未检索到匹配用户</div>
+            <div class="empty-desc">系统持续扫描中，新的连接即将建立 ⚡</div>
         </div>
         """, unsafe_allow_html=True)
         return
@@ -1044,7 +1161,7 @@ def page_profile():
             with cols[i]:
                 b64_url = photo_to_base64(p['id'])
                 if b64_url:
-                    st.markdown(f'<img src="{b64_url}" style="width:100%;border-radius:14px;border:2px solid #f8bbd0;">', unsafe_allow_html=True)
+st.markdown(f'<img src="{b64_url}" style="width:100%;border-radius:12px;border:1.5px solid rgba(0,229,255,0.2);box-shadow:0 0 12px rgba(0,229,255,0.08);">', unsafe_allow_html=True)
                     if st.button(f"🗑️ 删除", key=f"del_photo_{p['id']}"):
                         conn.execute("DELETE FROM photo WHERE id = ?", (p['id'],))
                         conn.commit()
@@ -1196,7 +1313,7 @@ def page_admin_photos():
 <div class="admin-photo-card">
     <div style="display:flex; align-items:center; gap:10px;">
         <strong>{u.get('nickname', '')}</strong>
-        <span style="color:#a1887f; font-size:0.82rem;">
+<span style="color:rgba(200,214,229,0.5); font-size:0.82rem;">
             {u.get('phone', '')} · {u.get('gender', '')} · {u.get('age', '?')}岁
         </span>
     </div>
@@ -1212,7 +1329,7 @@ def page_admin_photos():
                 with cols[i]:
                     b64_url = photo_to_base64(p['id'])
                     if b64_url:
-                        st.markdown(f'<img src="{b64_url}" style="width:90px;height:90px;border-radius:14px;object-fit:cover;border:2px solid #f8bbd0;">', unsafe_allow_html=True)
+st.markdown(f'<img src="{b64_url}" style="width:90px;height:90px;border-radius:10px;object-fit:cover;border:1.5px solid rgba(0,229,255,0.2);box-shadow:0 0 10px rgba(0,229,255,0.08);">', unsafe_allow_html=True)
                         if st.button("✕", key=f"admin_del_{p['id']}"):
                             conn.execute("DELETE FROM photo WHERE id = ?", (p['id'],))
                             conn.commit()
@@ -1255,22 +1372,22 @@ def main():
 
     # 侧边栏导航（管理员入口）
     with st.sidebar:
-        st.markdown("### 🎵 缘音乐")
+        st.markdown("### 🤖 缘音乐 AI")
         st.markdown("---")
         if st.session_state.user_id:
             me = get_user_by_id(st.session_state.user_id)
             if me:
                 st.markdown(f"👤 **{me.get('nickname', '')}**")
             st.markdown("---")
-            if st.button("🌸 缘音乐广场", use_container_width=True, key="nav_square"):
+            if st.button("⚡ 缘音乐广场", use_container_width=True, key="nav_square"):
                 navigate('square')
-            if st.button("💘 AI 智能配对", use_container_width=True, key="nav_match_sidebar"):
+            if st.button("🧠 AI 智能配对", use_container_width=True, key="nav_match_sidebar"):
                 navigate('ai_match')
             if st.button("✏️ 编辑资料", use_container_width=True, key="nav_profile"):
                 navigate('profile')
             st.markdown("---")
         if is_admin():
-            st.markdown("##### 🔧 管理员")
+            st.markdown("##### 🛡️ 管理员")
             if st.button("📦 批量导入", use_container_width=True, key="nav_import"):
                 navigate('admin_import')
             if st.button("📷 照片管理", use_container_width=True, key="nav_photos"):
