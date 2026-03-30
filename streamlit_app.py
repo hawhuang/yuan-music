@@ -895,7 +895,7 @@ def page_square():
     else:
         col1, col2, col3, col4 = st.columns([4, 1.2, 1.2, 1])
     with col1:
-    st.markdown("### ⚡ 缘音乐广场")
+        st.markdown("### ⚡ 缘音乐广场")
     with col2:
         if st.button("✏️ 资料", key="nav_edit"):
             navigate('profile')
@@ -1161,7 +1161,7 @@ def page_profile():
             with cols[i]:
                 b64_url = photo_to_base64(p['id'])
                 if b64_url:
-st.markdown(f'<img src="{b64_url}" style="width:100%;border-radius:12px;border:1.5px solid rgba(0,229,255,0.2);box-shadow:0 0 12px rgba(0,229,255,0.08);">', unsafe_allow_html=True)
+                    st.markdown(f'<img src="{b64_url}" style="width:100%;border-radius:12px;border:1.5px solid rgba(0,229,255,0.2);box-shadow:0 0 12px rgba(0,229,255,0.08);">', unsafe_allow_html=True)
                     if st.button(f"🗑️ 删除", key=f"del_photo_{p['id']}"):
                         conn.execute("DELETE FROM photo WHERE id = ?", (p['id'],))
                         conn.commit()
