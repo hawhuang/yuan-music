@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 import base64
 import io
-import libsql_experimental as libsql
+import requests
+import json
 from datetime import datetime
 
 # ==================== 超级管理员配置 ====================
@@ -290,13 +291,115 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ==================== 数据库连接（Turso/libsql） ====================
+# ==================== Turso HTTP API 封装 ====================
+class TursoConnection:
+    """通过 Turso HTTP API 操作数据库（纯 Python，无需编译原生库）"""
+
+    def __init__(self, url, auth_token):
+        # 将 libsql:// 转为 https://
+        self.base_url = url.replace("libsql://", "https://")
+        self.auth_token = auth_token
+        self.headers = {
+            "Authorization": f"Bearer {auth_token}",
+            "Content-Type": "application/json",
+        }
+
+    def _post(self, statements):
+        """发送请求到 Turso HTTP API（Pipeline 模式）"""
+        payload = {"requests": []}
+        for stmt in statements:
+            if isinstance(stmt, str):
+                payload["requests"].append({"type": "execute", "stmt": {"sql": stmt}})
+            else:
+                sql, args = stmt
+                named_args = []
+                for i, arg in enumerate(args):
+                    if arg is None:
+                        named_args.append({"type": "null"})
+                    elif isinstance(arg, int):
+                        named_args.append({"type": "integer", "value": str(arg)})
+                    elif isinstance(arg, float):
+                        named_args.append({"type": "float", "value": arg})
+                    else:
+                        named_args.append({"type": "text", "value": str(arg)})
+                payload["requests"].append({
+                    "type": "execute",
+                    "stmt": {"sql": sql, "args": named_args}
+                })
+        payload["requests"].append({"type": "close"})
+        resp = requests.post(
+            f"{self.base_url}/v2/pipeline",
+            headers=self.headers,
+            json=payload,
+            timeout=30
+        )
+        resp.raise_for_status()
+        return resp.json()
+
+    def execute(self, sql, params=None):
+        """执行单条 SQL，返回 TursoCursor 对象"""
+        if params:
+            result = self._post([(sql, params)])
+        else:
+            result = self._post([sql])
+        # 解析结果
+        results = result.get("results", [])
+        if results and results[0].get("type") == "ok":
+            response = results[0]["response"]
+            res = response.get("result", {})
+            cols = [c["name"] for c in res.get("cols", [])]
+            rows = []
+            for row in res.get("rows", []):
+                parsed_row = []
+                for cell in row:
+                    if cell.get("type") == "null":
+                        parsed_row.append(None)
+                    elif cell.get("type") == "integer":
+                        parsed_row.append(int(cell["value"]))
+                    elif cell.get("type") == "float":
+                        parsed_row.append(float(cell["value"]))
+                    else:
+                        parsed_row.append(cell.get("value"))
+                rows.append(tuple(parsed_row))
+            return TursoCursor(cols, rows)
+        # 检查是否有错误
+        if results and results[0].get("type") == "error":
+            err = results[0].get("error", {})
+            raise Exception(f"Turso error: {err.get('message', str(err))}")
+        return TursoCursor([], [])
+
+    def commit(self):
+        """Turso HTTP API 自动提交，此方法为兼容性保留"""
+        pass
+
+
+class TursoCursor:
+    """模拟 DB-API cursor 对象"""
+
+    def __init__(self, columns, rows):
+        self.columns = columns
+        self._rows = rows
+        self._index = 0
+
+    def fetchone(self):
+        if self._index < len(self._rows):
+            row = self._rows[self._index]
+            self._index += 1
+            return row
+        return None
+
+    def fetchall(self):
+        remaining = self._rows[self._index:]
+        self._index = len(self._rows)
+        return remaining
+
+
 @st.cache_resource
 def get_connection():
-    """获取 Turso 数据库连接（从 .streamlit/secrets.toml 读取配置）"""
+    """获取 Turso 数据库连接（HTTP API 方式，无需编译原生库）"""
     turso_url = st.secrets["turso"]["url"]
     turso_token = st.secrets["turso"]["auth_token"]
-    return libsql.connect(turso_url, auth_token=turso_token)
+    return TursoConnection(turso_url, turso_token)
 
 conn = get_connection()
 
