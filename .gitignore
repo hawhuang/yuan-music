@@ -1,0 +1,8 @@
+venv/
+__pycache__/
+*.pyc
+*.db
+.DS_Store
+static/uploads/
+.streamlit/secrets.toml
+yuanyin-kevinshuang.aws-ap-northeast-1.turso.io
