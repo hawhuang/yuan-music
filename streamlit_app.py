@@ -1329,7 +1329,7 @@ def page_admin_photos():
                 with cols[i]:
                     b64_url = photo_to_base64(p['id'])
                     if b64_url:
-st.markdown(f'<img src="{b64_url}" style="width:90px;height:90px;border-radius:10px;object-fit:cover;border:1.5px solid rgba(0,229,255,0.2);box-shadow:0 0 10px rgba(0,229,255,0.08);">', unsafe_allow_html=True)
+                        st.markdown(f'<img src="{b64_url}" style="width:90px;height:90px;border-radius:10px;object-fit:cover;border:1.5px solid rgba(0,229,255,0.2);box-shadow:0 0 10px rgba(0,229,255,0.08);">', unsafe_allow_html=True)
                         if st.button("✕", key=f"admin_del_{p['id']}"):
                             conn.execute("DELETE FROM photo WHERE id = ?", (p['id'],))
                             conn.commit()
