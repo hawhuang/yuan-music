@@ -104,33 +104,102 @@ st.markdown("""
         transform: translateY(0px) !important;
     }
 
-    /* 输入框美化 - 科技风 */
+    /* 输入框美化 - 科技毛玻璃风 */
     .stTextInput > div > div > input {
-        border: 1.5px solid rgba(0, 229, 255, 0.25) !important;
+        border: 1.5px solid rgba(0, 229, 255, 0.2) !important;
         border-radius: 12px !important;
         padding: 10px 16px !important;
-        background: rgba(10, 14, 39, 0.8) !important;
+        background: linear-gradient(135deg, rgba(13, 17, 55, 0.65), rgba(20, 24, 82, 0.55)) !important;
+        backdrop-filter: blur(12px) !important;
         color: #e0f7fa !important;
-        transition: all 0.3s !important;
+        transition: all 0.3s ease !important;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), 0 0 8px rgba(0, 229, 255, 0.04) !important;
     }
     .stTextInput > div > div > input:focus {
-        border-color: #00e5ff !important;
-        box-shadow: 0 0 15px rgba(0, 229, 255, 0.15), 0 0 30px rgba(0, 229, 255, 0.05) !important;
-        background: rgba(13, 17, 55, 0.95) !important;
+        border-color: rgba(0, 229, 255, 0.5) !important;
+        box-shadow: 0 0 12px rgba(0, 229, 255, 0.12), 0 0 24px rgba(0, 229, 255, 0.04), inset 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+        background: linear-gradient(135deg, rgba(13, 17, 55, 0.8), rgba(20, 24, 82, 0.7)) !important;
     }
     .stTextInput > div > div > input::placeholder {
-        color: rgba(200, 214, 229, 0.4) !important;
+        color: rgba(200, 214, 229, 0.35) !important;
     }
+
+    /* 下拉框美化 - 科技毛玻璃风 */
     .stSelectbox > div > div {
-        border: 1.5px solid rgba(0, 229, 255, 0.25) !important;
+        border: 1.5px solid rgba(0, 229, 255, 0.2) !important;
         border-radius: 12px !important;
-        background: rgba(10, 14, 39, 0.8) !important;
+        background: linear-gradient(135deg, rgba(13, 17, 55, 0.65), rgba(20, 24, 82, 0.55)) !important;
+        backdrop-filter: blur(12px) !important;
+        transition: all 0.3s ease !important;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), 0 0 8px rgba(0, 229, 255, 0.04) !important;
     }
-    .stNumberInput > div > div > input {
-        border: 1.5px solid rgba(0, 229, 255, 0.25) !important;
+    .stSelectbox > div > div:hover {
+        border-color: rgba(0, 229, 255, 0.35) !important;
+        box-shadow: 0 0 10px rgba(0, 229, 255, 0.08), inset 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+    }
+    /* 下拉框选项列表 */
+    [data-baseweb="popover"] {
+        background: linear-gradient(135deg, rgba(13, 17, 55, 0.95), rgba(20, 24, 82, 0.92)) !important;
+        backdrop-filter: blur(20px) !important;
+        border: 1px solid rgba(0, 229, 255, 0.2) !important;
         border-radius: 12px !important;
-        background: rgba(10, 14, 39, 0.8) !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 229, 255, 0.06) !important;
+    }
+    [data-baseweb="popover"] li {
+        color: #c8d6e5 !important;
+        transition: all 0.2s ease !important;
+    }
+    [data-baseweb="popover"] li:hover {
+        background: rgba(0, 229, 255, 0.1) !important;
         color: #e0f7fa !important;
+    }
+    [data-baseweb="popover"] li[aria-selected="true"] {
+        background: rgba(0, 229, 255, 0.15) !important;
+        color: #00e5ff !important;
+    }
+
+    /* 数字输入框 */
+    .stNumberInput > div > div > input {
+        border: 1.5px solid rgba(0, 229, 255, 0.2) !important;
+        border-radius: 12px !important;
+        background: linear-gradient(135deg, rgba(13, 17, 55, 0.65), rgba(20, 24, 82, 0.55)) !important;
+        backdrop-filter: blur(12px) !important;
+        color: #e0f7fa !important;
+        transition: all 0.3s ease !important;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), 0 0 8px rgba(0, 229, 255, 0.04) !important;
+    }
+    .stNumberInput > div > div > input:focus {
+        border-color: rgba(0, 229, 255, 0.5) !important;
+        box-shadow: 0 0 12px rgba(0, 229, 255, 0.12), inset 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+        background: linear-gradient(135deg, rgba(13, 17, 55, 0.8), rgba(20, 24, 82, 0.7)) !important;
+    }
+
+    /* 多选框美化 */
+    .stMultiSelect > div > div {
+        border: 1.5px solid rgba(0, 229, 255, 0.2) !important;
+        border-radius: 12px !important;
+        background: linear-gradient(135deg, rgba(13, 17, 55, 0.65), rgba(20, 24, 82, 0.55)) !important;
+        backdrop-filter: blur(12px) !important;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), 0 0 8px rgba(0, 229, 255, 0.04) !important;
+    }
+    .stMultiSelect > div > div:hover {
+        border-color: rgba(0, 229, 255, 0.35) !important;
+    }
+
+    /* 文本域美化 */
+    .stTextArea > div > div > textarea {
+        border: 1.5px solid rgba(0, 229, 255, 0.2) !important;
+        border-radius: 12px !important;
+        background: linear-gradient(135deg, rgba(13, 17, 55, 0.65), rgba(20, 24, 82, 0.55)) !important;
+        backdrop-filter: blur(12px) !important;
+        color: #e0f7fa !important;
+        transition: all 0.3s ease !important;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), 0 0 8px rgba(0, 229, 255, 0.04) !important;
+    }
+    .stTextArea > div > div > textarea:focus {
+        border-color: rgba(0, 229, 255, 0.5) !important;
+        box-shadow: 0 0 12px rgba(0, 229, 255, 0.12), inset 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+        background: linear-gradient(135deg, rgba(13, 17, 55, 0.8), rgba(20, 24, 82, 0.7)) !important;
     }
 
     /* 副标题 */
